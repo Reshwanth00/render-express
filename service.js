@@ -1,18 +1,54 @@
-const User = require('./user');
+const DbObject = require('./DbObject');
 
-const addUser = async (userData) => {
-    const { name, password } = userData;
+const addObject = async (formData) => {
+    const {
+        title,
+        description,
+        imageFile: {
+            imageName,
+            imageUrl
+        },
+        videoFile: {
+            videoName,
+            videoUrl
+        }
+    } = formData;  
+
     try {
-        const newUser = new User({
-            name,
-            password,
+
+        const newObject = new DbObject({
+            title,
+            description,
+            imageFile: {
+                imageName,
+                imageUrl
+            },
+            videoFile: {
+                videoName,
+                videoUrl
+            }
         });
-        let savedUser = await newUser.save();
-        return savedUser;
+
+        // Save the document to the database
+        const savedObject = await newObject.save();
+        return savedObject;
     } catch (error) {
-        console.error("Error creating user:", error);
+        console.error("Error creating object:", error);
         throw new Error(error.message);
     }
 };
 
-module.exports = addUser;
+const getAllObjects = async () => {
+    try {
+        const objects = await DbObject.find({});
+        return objects;
+    } catch (error) {
+        console.error("Error fetching objects:", error);
+        throw new Error(error.message);
+    }
+};
+
+module.exports = {
+    addObject,
+    getAllObjects  
+};

@@ -1,19 +1,22 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const connectDB = require("./mongodb");
 const projectRoutes = require('./controller');
 
 const app = express();
-const port = 3000;
+const port = 3001;
 
 connectDB();
 
-// Middleware to parse JSON
 app.use(bodyParser.json());
 
-app.use('/api',projectRoutes);
+app.use(cors({
+    origin: 'http://localhost:3000'
+}));
 
-// Start the server
+app.use('/api', projectRoutes);
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
