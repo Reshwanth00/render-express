@@ -11,7 +11,7 @@ connectDB();
 
 app.use(bodyParser.json());
 
-app.use(cors()); // Allow all CORS requests
+app.use(cors()); 
 
 app.use('/api', projectRoutes);
 
